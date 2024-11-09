@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chezz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<style>
+    .chessboard {
+        display: grid;
+        grid-template-columns: repeat(8, minmax(0, 1fr));
+        grid-template-rows: repeat(8, minmax(0, 1fr));
+        width: 400px;
+        height: 400px;
+        transform: rotate(0deg);
+    }
+
+    .piece.white {
+        color: white;
+    }
+
+    .piece.black {
+        color: black;
+    }
+
+    .flipped {
+        transform: rotate(180deg);
+    }
+
+    .square {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .square.light {
+        background-color: #f0d9bf;
+    }
+
+    .square.dark {
+        background-color: #b58863;
+    }
+
+    .piece {
+        font-size: 36px;
+        cursor: pointer;
+    }
+
+    .piece.draggable {
+        cursor: grab;
+    }
+
+    .dragging {
+        opacity: 0.5;
+    }
+
+    .flipped .place {
+        transform: rotate(180deg);
+    }
+
+    .notification {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 10px;
+        border-radius: 5px;
+        display: none; /* Initially hidden */
+        z-index: 1000; /* Ensure it appears above other elements */
+    }
+
+    .chat-container {
+        position: absolute;
+        top: 50%; /* Center vertically */
+        right: 10px; /* Position from the right */
+        transform: translateY(-50%); /* Center vertically */
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 10px;
+        border-radius: 5px;
+        max-width: 300px;
+        max-height: 300px;
+        overflow-y: auto;
+        z-index: 1000;
+    }
+
+    .chat-message {
+        margin: 5px 0;
+        padding: 5px;
+        border-radius: 5px;
+    }
+
+    .chat-message.self {
+        background-color: #007bff; /* Color for the current user's messages */
+        color: white; /* Text color for the current user's messages */
+        text-align: right; /* Align text to the right */
+    }
+
+    .chat-message.other {
+        background-color: #f0f0f0; /* Color for other users' messages */
+        color: black; /* Text color for other users' messages */
+        text-align: left; /* Align text to the left */
+    }
+
+    .chat-input {
+        display: flex;
+        margin-top: 10px;
+    }
+
+    .chat-input input {
+        flex: 1;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .chat-input button {
+        padding: 5px 10px;
+        margin-left: 5px;
+        border: none;
+        background-color: #007bff;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>
+
+<body>
+    <div class="w-full h-screen flex items-center justify-center bg-zinc-900 relative">
+        <div class="notification" id="notification"></div>
+        <div class="chessboard w-96 h-96 bg-red-800"></div>
+
+        <!-- Chat Container -->
+        <div class="chat-container" id="chat-container">
+            <div id="chat-messages"></div>
+            <div class="chat-input">
+                <input type="text" id="chat-input" placeholder="Type a message..." />
+                <button id="send-chat">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.socket.io/4.8.0/socket.io.min.js" 
+    integrity="sha384-OoIbkvzsFFQAG88r+IqMAjyOtYDPGO0cqK5HF5Uosdy/zUEGySeAzytENMDynREd" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js" integrity="sha512-xRllwz2gdZciIB+AkEbeq+gVhX8VB8XsfqeFbUh+SzHlN96dEduwtTuVuc2u9EROlmW9+yhRlxjif66ORpsgVA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="/js/game.js"></script>
+</body>
+</html>
